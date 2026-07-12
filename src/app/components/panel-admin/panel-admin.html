@@ -1,0 +1,122 @@
+<!-- NAVBAR -->
+<nav class="navbar is-dark px-4">
+  <div class="navbar-brand">
+    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">🛒 Panel Admin</span>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <span class="has-text-white mr-4">{{ usuario?.nombre }} ({{ usuario?.rol }})</span>
+      <button class="button is-light is-small" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+
+    <!-- TABS -->
+    <div class="tabs is-boxed mb-5">
+      <ul>
+        <li [class.is-active]="tabActiva === 'pedidos'" (click)="tabActiva = 'pedidos'">
+          <a>Pedidos</a>
+        </li>
+        <li [class.is-active]="tabActiva === 'usuarios'" (click)="tabActiva = 'usuarios'">
+          <a>Usuarios</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- TAB PEDIDOS -->
+    @if (tabActiva === 'pedidos') {
+      <h2 class="title is-4">Gestión de Pedidos</h2>
+      @if (cargando) {
+        <p>Cargando pedidos...</p>
+      }
+      @if (!cargando && pedidos.length === 0) {
+        <div class="notification is-light">No hay pedidos registrados.</div>
+      }
+      @for (pedido of pedidos; track pedido.id) {
+        <div class="card mb-4">
+          <div class="card-content">
+            <div class="level">
+              <div class="level-left">
+                <p class="title is-5">Pedido #{{ pedido.id }}</p>
+              </div>
+              <div class="level-right">
+                <span class="tag {{ getBadgeClass(pedido.estatus) }} is-medium">{{ pedido.estatus }}</span>
+              </div>
+            </div>
+            <p><b>Total:</b> ${{ pedido.total }}</p>
+            <p><b>Dirección:</b> {{ pedido.direccion_envio }}</p>
+
+            <div class="field is-grouped mt-3">
+              <div class="control">
+                <div class="select">
+                  <select [(ngModel)]="pedido.estatus">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="pagado">Pagado</option>
+                    <option value="en preparacion">En preparación</option>
+                    <option value="enviado">Enviado</option>
+                    <option value="entregado">Entregado</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <input class="input" type="text" placeholder="Número de guía"
+                  [(ngModel)]="pedido.numero_guia">
+              </div>
+              <div class="control">
+                <button class="button is-primary" (click)="actualizarEstatus(pedido)">
+                  ✅ Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    <!-- TAB USUARIOS -->
+    @if (tabActiva === 'usuarios') {
+      <h2 class="title is-4">Gestión de Usuarios</h2>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol actual</th>
+            <th>Cambiar rol</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuarios; track u.id) {
+            <tr>
+              <td>{{ u.id }}</td>
+              <td>{{ u.nombre }}</td>
+              <td>{{ u.correo }}</td>
+              <td><span class="tag is-info">{{ u.rol }}</span></td>
+              <td>
+                <div class="select is-small">
+                  <select [(ngModel)]="u.role_id">
+                    <option value="1">Cliente</option>
+                    <option value="2">Vendedor</option>
+                    <option value="3">Administrador</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <button class="button is-warning is-small" (click)="cambiarRol(u)">
+                  Cambiar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+
+  </div>
+</section>

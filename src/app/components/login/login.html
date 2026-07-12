@@ -1,0 +1,47 @@
+<section class="hero is-fullheight is-light">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-4">
+
+          <div class="box">
+            <h1 class="title has-text-centered">🛒 Tienda Online</h1>
+            <h2 class="subtitle has-text-centered">Iniciar sesión</h2>
+
+            @if (error) {
+              <div class="notification is-danger is-light">{{ error }}</div>
+            }
+
+            <div class="field">
+              <label class="label">Correo</label>
+              <div class="control">
+                <input class="input" type="email" placeholder="correo@ejemplo.com"
+                  [(ngModel)]="correo">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Contraseña</label>
+              <div class="control">
+                <input class="input" type="password" placeholder="********"
+                  [(ngModel)]="password">
+              </div>
+            </div>
+
+            <button class="button is-primary is-fullwidth mt-4"
+              [class.is-loading]="cargando"
+              (click)="login()">
+              Iniciar sesión
+            </button>
+
+            <p class="has-text-centered mt-4">
+              ¿No tienes cuenta?
+              <a routerLink="/registro">Regístrate aquí</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

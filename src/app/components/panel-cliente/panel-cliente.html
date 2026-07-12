@@ -1,0 +1,61 @@
+<!-- NAVBAR -->
+<nav class="navbar is-dark px-4">
+  <div class="navbar-brand">
+    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">🛒 Tienda Online</span>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <span class="has-text-white mr-4">Hola, {{ usuario?.nombre }}</span>
+      <button class="button is-light is-small" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <h2 class="title">Panel del Cliente</h2>
+    <h3 class="subtitle">Mis pedidos</h3>
+
+    @if (cargando) {
+      <div class="has-text-centered py-6">
+        <span class="icon is-large"><i class="fas fa-spinner fa-pulse"></i></span>
+        <p>Cargando pedidos...</p>
+      </div>
+    }
+
+    @if (!cargando && pedidos.length === 0) {
+      <div class="notification is-light">
+        No tienes pedidos aún. ¡Ve al catálogo y compra algo!
+      </div>
+    }
+
+    @if (!cargando && pedidos.length > 0) {
+      <div class="columns is-multiline">
+        @for (pedido of pedidos; track pedido.id) {
+          <div class="column is-6">
+            <div class="card">
+              <div class="card-content">
+                <div class="level">
+                  <div class="level-left">
+                    <p class="title is-5">Pedido #{{ pedido.id }}</p>
+                  </div>
+                  <div class="level-right">
+                    <span class="tag {{ getBadgeClass(pedido.estatus) }} is-medium">
+                      {{ pedido.estatus }}
+                    </span>
+                  </div>
+                </div>
+                <p><b>Total:</b> ${{ pedido.total }}</p>
+                <p><b>Dirección:</b> {{ pedido.direccion_envio }}</p>
+                <p><b>Fecha:</b> {{ pedido.created_at | date:'dd/MM/yyyy' }}</p>
+                @if (pedido.numero_guia) {
+                  <p><b>Número de guía:</b> {{ pedido.numero_guia }}</p>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>
