@@ -1,0 +1,96 @@
+<!-- NAVBAR -->
+<nav class="navbar is-dark px-4">
+  <div class="navbar-brand">
+    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">📊 Dashboard</span>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <span class="has-text-white mr-4">{{ usuario?.nombre }}</span>
+      <a class="button is-light is-small mr-2" routerLink="/panel-admin">Panel Admin</a>
+      <button class="button is-danger is-small" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <h2 class="title">Panel de Control</h2>
+    <h3 class="subtitle">Métricas generales de la tienda</h3>
+
+    @if (cargando) {
+      <p>Cargando métricas...</p>
+    }
+
+    <!-- TARJETAS -->
+    <div class="columns mb-6" [style.visibility]="cargando ? 'hidden' : 'visible'">
+      <div class="column">
+        <div class="box has-text-centered">
+          <p class="heading">Total Pedidos</p>
+          <p class="title has-text-primary">{{ totalPedidos }}</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box has-text-centered">
+          <p class="heading">Pagados</p>
+          <p class="title has-text-info">{{ totalPagados }}</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box has-text-centered">
+          <p class="heading">Pendientes</p>
+          <p class="title has-text-warning">{{ totalPendientes }}</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box has-text-centered">
+          <p class="heading">Entregados</p>
+          <p class="title has-text-success">{{ totalEntregados }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRÁFICAS -->
+    <div class="columns" [style.visibility]="cargando ? 'hidden' : 'visible'">
+      <div class="column is-5">
+        <div class="box">
+          <h4 class="title is-5 mb-4">Pedidos por estatus</h4>
+          <canvas #chartEstatus width="400" height="300"></canvas>
+        </div>
+      </div>
+      <div class="column is-7">
+        <div class="box">
+          <h4 class="title is-5 mb-4">Total por pedido (últimos 10)</h4>
+          <canvas #chartPedidos width="400" height="300"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="box mt-4" [style.visibility]="cargando ? 'hidden' : 'visible'">
+      <h4 class="title is-5 mb-4">Últimos pedidos</h4>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Total</th>
+            <th>Estatus</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (pedido of pedidos.slice(0, 10); track pedido.id) {
+            <tr>
+              <td>#{{ pedido.id }}</td>
+              <td>{{ pedido.user_id }}</td>
+              <td>${{ pedido.total }}</td>
+              <td><span class="tag is-info">{{ pedido.estatus }}</span></td>
+              <td>{{ pedido.created_at | date:'dd/MM/yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
