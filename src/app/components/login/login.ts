@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -26,13 +26,15 @@ export class Login {
     this.error = '';
     this.authService.login({ correo: this.correo, password: this.password }).subscribe({
       next: (res) => {
-        this.authService.guardarSesion(res.token, res.usuario);
-        if (res.usuario.rol === 'administrador' || res.usuario.rol === 'vendedor') {
-          this.router.navigate(['/panel-admin']);
-        } else {
-          this.router.navigate(['/panel-cliente']);
-        }
-      },
+  this.authService.guardarSesion(res.token, res.usuario);
+  if (res.usuario.rol === 'administrador') {
+    this.router.navigate(['/dashboard']);
+  } else if (res.usuario.rol === 'vendedor') {
+    this.router.navigate(['/panel-admin']);
+  } else {
+    this.router.navigate(['/panel-cliente']);
+  }
+},
       error: () => {
         this.error = 'Correo o contraseña incorrectos';
         this.cargando = false;
