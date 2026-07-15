@@ -1,0 +1,143 @@
+<!-- NAVBAR -->
+<nav class="navbar is-dark px-4">
+  <div class="navbar-brand">
+    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">Gestión de Productos</span>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <a class="button is-light is-small mr-2" routerLink="/panel-admin">Panel Admin</a>
+      <a class="button is-info is-small mr-2" routerLink="/dashboard">Dashboard</a>
+      <button class="button is-danger is-small" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+
+    @if (mensaje) {
+      <div class="notification is-success is-light">{{ mensaje }}</div>
+    }
+    @if (error) {
+      <div class="notification is-danger is-light">{{ error }}</div>
+    }
+
+    <!-- FORMULARIO -->
+    <div class="box mb-5">
+      <h3 class="title is-5">{{ modoEdicion ? 'Editar producto' : 'Agregar nuevo producto' }}</h3>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label">Nombre *</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Nombre del producto"
+                [(ngModel)]="nuevoProducto.nombre">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Precio *</label>
+            <div class="control">
+              <input class="input" type="number" placeholder="0.00"
+                [(ngModel)]="nuevoProducto.precio">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Stock</label>
+            <div class="control">
+              <input class="input" type="number" placeholder="0"
+                [(ngModel)]="nuevoProducto.stock">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Categoría</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select [(ngModel)]="nuevoProducto.category_id">
+                  <option [value]="null">Sin categoría</option>
+                  @for (cat of categorias; track cat.id) {
+                    <option [value]="cat.id">{{ cat.nombre }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label">Descripción</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="Descripción del producto"
+                [(ngModel)]="nuevoProducto.descripcion"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">URL de imagen</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="https://..."
+                [(ngModel)]="nuevoProducto.imagen">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        @if (modoEdicion) {
+          <div class="control">
+            <button class="button is-warning" (click)="actualizarProducto()">Actualizar</button>
+          </div>
+          <div class="control">
+            <button class="button is-light" (click)="limpiarFormulario()">Cancelar</button>
+          </div>
+        } @else {
+          <div class="control">
+            <button class="button is-success" (click)="agregarProducto()">➕ Agregar producto</button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <h3 class="title is-5">Productos registrados</h3>
+
+    @if (cargando) {
+      <p>Cargando productos...</p>
+    }
+
+    @if (!cargando && productos.length === 0) {
+      <div class="notification is-light">No hay productos registrados aún.</div>
+    }
+
+    <div class="columns is-multiline">
+      @for (producto of productos; track producto.id) {
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-6">{{ producto.nombre }}</p>
+              <p class="subtitle is-7 text-muted">{{ producto.categoria || 'Sin categoría' }}</p>
+              <p><b>Precio:</b> ${{ producto.precio }}</p>
+              <p><b>Stock:</b> {{ producto.stock }}</p>
+              <p class="is-size-7 mt-2">{{ producto.descripcion }}</p>
+            </div>
+            <div class="card-footer">
+              <a class="card-footer-item has-text-warning" (click)="editarProducto(producto)">Editar</a>
+              <a class="card-footer-item has-text-danger" (click)="eliminarProducto(producto.id)">Eliminar</a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

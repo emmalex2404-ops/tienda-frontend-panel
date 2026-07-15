@@ -1,12 +1,14 @@
 <!-- NAVBAR -->
 <nav class="navbar is-dark px-4">
   <div class="navbar-brand">
-    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">🛒 Panel Admin</span>
+    <span class="navbar-item has-text-white has-text-weight-bold is-size-5">Panel Admin</span>
   </div>
   <div class="navbar-end">
     <div class="navbar-item">
       <span class="has-text-white mr-4">{{ usuario?.nombre }} ({{ usuario?.rol }})</span>
-      <button class="button is-light is-small" (click)="cerrarSesion()">Cerrar sesión</button>
+      <a class="button is-info is-small mr-2" routerLink="/productos">Productos</a>
+      <a class="button is-light is-small mr-2" routerLink="/dashboard">Dashboard</a>
+      <button class="button is-danger is-small" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
   </div>
 </nav>

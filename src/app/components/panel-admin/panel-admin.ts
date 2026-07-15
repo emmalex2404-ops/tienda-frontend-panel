@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Auth, Usuario } from '../../services/auth';
 
 @Component({
   selector: 'app-panel-admin',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './panel-admin.html',
   styleUrl: './panel-admin.css'
 })
