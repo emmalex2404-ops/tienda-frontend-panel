@@ -19,7 +19,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class Auth {
-  private apiUrl = 'http://localhost:3002';
+  private apiUrl = 'https://api-usuarios.hexamx.com.mx';
 
   constructor(private http: HttpClient) {}
 

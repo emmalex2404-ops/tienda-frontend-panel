@@ -28,7 +28,7 @@ export class PanelCliente implements OnInit {
 
   cargarPedidos() {
     const headers = new HttpHeaders({ Authorization: `Bearer ${this.authService.getToken()}` });
-    this.http.get<any[]>('http://localhost:3003/pedidos/mis-pedidos', { headers }).subscribe({
+    this.http.get<any[]>('https://api-pedidos.hexamx.com.mx/pedidos/mis-pedidos', { headers }).subscribe({
       next: (data) => {
         this.pedidos = data;
         this.cargando = false;

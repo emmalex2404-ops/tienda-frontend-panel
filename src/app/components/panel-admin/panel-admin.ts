@@ -34,7 +34,7 @@ export class PanelAdmin implements OnInit {
   }
 
   cargarPedidos() {
-    this.http.get<any[]>('http://localhost:3003/pedidos', { headers: this.getHeaders() }).subscribe({
+    this.http.get<any[]>('https://api-pedidos.hexamx.com.mx/pedidos', { headers: this.getHeaders() }).subscribe({
       next: (data) => { this.pedidos = data; this.cargando = false; },
       error: () => this.cargando = false
     });
@@ -48,7 +48,7 @@ export class PanelAdmin implements OnInit {
   }
 
   actualizarEstatus(pedido: any) {
-    this.http.patch(`http://localhost:3003/pedidos/${pedido.id}/estatus`,
+    this.http.patch(`https://api-pedidos.hexamx.com.mx/pedidos/${pedido.id}/estatus`,
       { estatus: pedido.estatus, numero_guia: pedido.numero_guia || null },
       { headers: this.getHeaders() }
     ).subscribe({

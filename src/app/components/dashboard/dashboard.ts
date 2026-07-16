@@ -46,7 +46,7 @@ export class Dashboard implements OnInit {
   }
 
   cargarDatos() {
-    this.http.get<any[]>('http://localhost:3003/pedidos', { headers: this.getHeaders() }).subscribe({
+    this.http.get<any[]>('https://api-pedidos.hexamx.com.mx/pedidos', { headers: this.getHeaders() }).subscribe({
       next: (data) => {
         this.pedidos = data;
         this.totalPedidos = data.length;

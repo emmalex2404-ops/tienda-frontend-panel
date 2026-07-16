@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class Productos {
-  private apiUrl = 'http://localhost:3001';
+  private apiUrl = 'https://api-productos.hexamx.com.mx';
 
   constructor(private http: HttpClient) {}
 
